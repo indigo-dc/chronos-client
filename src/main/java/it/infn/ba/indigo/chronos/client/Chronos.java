@@ -1,19 +1,20 @@
 package it.infn.ba.indigo.chronos.client;
 
+import java.util.List;
+
 import javax.inject.Named;
 
 import feign.RequestLine;
-import it.infn.ba.indigo.chronos.client.model.v1.GetJobsResponse;
 import it.infn.ba.indigo.chronos.client.model.v1.Job;
 import it.infn.ba.indigo.chronos.client.utils.ChronosException;
 
 public interface Chronos {
 
   @RequestLine("GET /scheduler/jobs")
-  GetJobsResponse getJobs();
+  List<Job> getJobs();
 
   @RequestLine("GET /scheduler/jobs/search?name={name}")
-  GetJobsResponse getJob(@Named("name") String name);
+  List<Job> getJob(@Named("name") String name);
 
   @RequestLine("POST /scheduler/iso8601")
   void createJob(Job job) throws ChronosException;
