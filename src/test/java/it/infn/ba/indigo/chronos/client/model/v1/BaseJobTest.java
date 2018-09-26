@@ -1,32 +1,16 @@
 package it.infn.ba.indigo.chronos.client.model.v1;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import it.infn.ba.indigo.chronos.client.*;
 import it.infn.ba.indigo.chronos.client.utils.ChronosException;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
-import java.util.Properties;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
-public class JobTest {
-  private Chronos chronos;
-
-  @Before
-  public void setup() throws IOException {
-    final Properties properties = new Properties();
-    InputStream in = getClass().getResourceAsStream("application.properties");
-    properties.load(in);
-
-    chronos =
-        ChronosClient.getInstanceWithBasicAuth(properties.getProperty("endpoint"),
-            properties.getProperty("username"), properties.getProperty("password"));
-  }
-
+public class BaseJobTest {
+  protected Chronos chronos;
+  
   public void getJobs() {
     Collection<Job> jobs = chronos.getJobs();
     System.out.println(jobs.toString());
@@ -51,6 +35,7 @@ public class JobTest {
     job.setCpus(0.5);
     job.setMem(512.0);
     job.setCommand("echo hi; sleep 10; echo bye;");
+    System.out.println(job.toString());
     chronos.createJob(job);
   }
 
@@ -73,16 +58,24 @@ public class JobTest {
     chronos.startJob(name);
   }
 
-  @Test
+  
   public void flow() throws ChronosException {
+  try {
     createJob("junit-test-job-1");
+    TimeUnit.SECONDS.sleep(5);
     List<String> parents = new ArrayList<String>();
     parents.add("junit-test-job-1");
     createDependentJob("junit-test-depjob-1", parents);
     getJobs();
     getJob("junit-test-job-1");
     startJob("junit-test-job-1");
+    TimeUnit.SECONDS.sleep(5);
     deleteJob("junit-test-job-1");
-    deleteJob("junit-test-depjob-1");
+    deleteJob("junit-test-depjob-1"); 
+  }catch(InterruptedException ex) {
+	  throw new ChronosException(1, ex.getMessage());
+	  
   }
+  }
+  
 }
