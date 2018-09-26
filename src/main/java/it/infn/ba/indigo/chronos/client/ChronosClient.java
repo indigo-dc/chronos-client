@@ -27,7 +27,6 @@ public class ChronosClient {
   static class ChronosErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
-      System.out.println(response);
       return new ChronosException(response.status(), response.reason());
     }
   }
