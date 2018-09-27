@@ -11,6 +11,7 @@ import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import it.infn.ba.indigo.chronos.client.utils.ChronosException;
 import it.infn.ba.indigo.chronos.client.utils.ModelUtils;
+import it.infn.ba.indigo.chronos.client.utils.TokenAuthRequestInterceptor;
 
 import static java.util.Arrays.asList;
 
@@ -54,10 +55,17 @@ public class ChronosClient {
   }
 
   /**
-   * Creates a Chronos client proxy that performs HTTP basic authentication.
+   * Creates a Chronos client proxy that performs token authentication.
    */
   public static Chronos getInstanceWithBasicAuth(String endpoint, String username,
       String password) {
     return getInstance(endpoint, new BasicAuthRequestInterceptor(username, password));
   }
+
+
+public static Chronos getInstanceWithTokenAuth(String endpoint, String token) {
+	    return getInstance(endpoint, new TokenAuthRequestInterceptor(token));
+  }
 }
+
+

@@ -30,6 +30,7 @@ public class Job implements Serializable {
   private Double cpus;
   private Double mem;
   private Double disk;
+  private Integer gpus;
   private Boolean disabled;
   private Collection<String> uris;
   private String schedule;
@@ -191,6 +192,14 @@ public class Job implements Serializable {
 
   public void setDisk(Double disk) {
     this.disk = disk;
+  }
+  
+  public Integer getGpus() {
+	  return gpus;
+  }
+  
+  public void setGpus(Integer gpus) {
+	 this.gpus = gpus;
   }
 
   public Boolean getDisabled() {
