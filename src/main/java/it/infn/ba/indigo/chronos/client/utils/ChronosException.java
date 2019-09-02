@@ -1,6 +1,6 @@
 package it.infn.ba.indigo.chronos.client.utils;
 
-public class ChronosException extends Exception {
+public class ChronosException extends RuntimeException {
   private static final long serialVersionUID = 1L;
   private int status;
   private String message;
